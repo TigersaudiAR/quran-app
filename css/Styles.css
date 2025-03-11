@@ -1,0 +1,173 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&family=Noto+Sans:wght@400;700&family=Noto+Sans+Arabic:wght@400;700&display=swap');
+
+:root {
+    --primary-color: #21865b;       /* أخضر مثل غلاف المصحف */
+    --secondary-color: #d4af37;     /* ذهبي مثل الزخارف */
+    --accent-color: #143b22;        /* أخضر داكن للتباين */
+    --background-light: #ffffff;    
+    --text-light: #333333;
+    --background-dark: #0F1723;     /* خلفية الأيقونة */
+    --text-dark: #f3f4f6;
+    --quran-bg-light: #f1f8f3;      /* خلفية مناسبة للقرآن */
+    --quran-bg-dark: #143b22;
+    --quran-border-light: #21865b;
+    --quran-border-dark: #21865b;
+}
+
+/* Set appropriate font families based on language */
+html[lang="ar"] body {
+    font-family: 'Amiri', 'Scheherazade New', serif;
+}
+
+html[lang="en"] body, html[lang="fr"] body {
+    font-family: 'Noto Sans', sans-serif;
+}
+
+html[lang="ur"] body {
+    font-family: 'Noto Sans', 'Noto Sans Arabic', sans-serif;
+}
+
+body {
+    transition: background-color 0.3s, color 0.3s;
+    overflow-x: hidden;
+}
+
+/* Splash screen animation */
+#splash-screen {
+    transition: opacity 0.5s ease-out;
+}
+
+#loading-progress {
+    animation: loading 2s ease-in-out infinite;
+}
+
+@keyframes loading {
+    0% { width: 0%; }
+    50% { width: 70%; }
+    100% { width: 100%; }
+}
+
+/* Prayer times styles */
+.prayer-time {
+    transition: all 0.3s;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.prayer-time.active {
+    background-color: var(--secondary-color);
+    color: var(--background-dark);
+}
+
+/* Compass styles */
+.compass {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.needle {
+    position: absolute;
+    width: 4px;
+    height: 50%;
+    background-color: var(--secondary-color);
+    bottom: 50%;
+    left: 50%;
+    transform-origin: bottom center;
+    transform: translateX(-50%) rotate(0deg);
+    transition: transform 0.5s;
+    z-index: 2;
+}
+
+.needle:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 12px solid var(--secondary-color);
+}
+
+.compass-center {
+    width: 15px;
+    height: 15px;
+    background-color: var(--secondary-color);
+    border-radius: 50%;
+    position: absolute;
+    z-index: 3;
+}
+
+/* Section button styles */
+.section-button {
+    transition: all 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.section-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Quran styles */
+.quran-page {
+    background-color: var(--quran-bg-light);
+    border: 1px solid var(--quran-border-light);
+    border-radius: 8px;
+    padding: 20px;
+    font-family: 'Scheherazade New', 'Amiri', serif;
+    text-align: center;
+    font-size: 22px;
+    line-height: 2.2;
+    direction: rtl;
+}
+
+.dark .quran-page {
+    background-color: var(--quran-bg-dark);
+    border-color: var(--quran-border-dark);
+}
+
+.verse {
+    transition: all 0.3s;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    margin: 10px 0;
+    color: var(--accent-color);
+}
+
+.dark .verse {
+    color: var(--secondary-color);
+}
+
+.verse:hover {
+    background-color: rgba(33, 134, 91, 0.1);
+}
+
+/* Dark mode */
+.dark {
+    background-color: var(--background-dark);
+    color: var(--text-dark);
+}
+
+.light {
+    background-color: var(--background-light);
+    color: var(--text-light);
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+    .compass {
+        width: 80px;
+        height: 80px;
+    }
+}
