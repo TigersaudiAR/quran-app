@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="تطبيق شامل للقرآن الكريم مع ميزات التلاوة والتحفيظ والبحث">
+    <meta name="theme-color" content="#0F1723">
+    <title>تطبيق القرآن الكريم التعليمي</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="icons/icon-167x167.png">
+</head>
+<body class="light">
+    <!-- شاشة البداية -->
+    <div id="splash-screen" class="fixed inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-[#0F1723] to-[#1A2D49] z-50">
+        <div class="text-center">
+            <div class="mb-8">
+                <img src="icons/icon-192x192.png" alt="تطبيق القرآن الكريم" class="w-24 h-24 mx-auto mb-4 animate-pulse">
+                <h1 class="text-4xl font-bold text-white">تطبيق القرآن الكريم التعليمي</h1>
+                <p class="text-xl text-white mt-2">المنصة الشاملة للتعليم والتحفيظ</p>
+            </div>
+            
+            <div class="loading-bar w-64 h-2 bg-white bg-opacity-30 rounded-full mx-auto overflow-hidden relative">
+                <div id="loading-progress" class="h-full bg-white rounded-full absolute left-0 top-0" style="width: 0%"></div>
+            </div>
+            
+            <div class="mt-8 text-white">
+                <p class="text-lg font-bold">عبدالرحمن عوض صالح الرشيدي للبرمجة وتطوير</p>
+                <p class="text-sm mt-1">
+                    <i class="fas fa-phone ml-1"></i> +966 599900121 |
+                    <i class="fas fa-envelope ml-1"></i> Tiger3Saudi@gmail.com
+                </p>
+                <p class="text-sm mt-1">المملكة العربية السعودية، الرياض</p>
+                <p class="text-xs mt-3">جميع الحقوق محفوظة &copy; 2023</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- محتوى التطبيق الرئيسي -->
+    <div id="app-container" class="hidden">
+        <!-- رأس الصفحة -->
+        <div class="bg-[#21865b] dark:bg-[#143b22] text-white py-2 px-4 shadow-md">
+            <div class="container mx-auto flex flex-wrap justify-between items-center">
+                <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                    <div class="flex items-center">
+                        <label for="language" class="text-sm font-medium text-white ml-2">اللغة:</label>
+                        <select id="language" class="bg-[#143b22] text-white rounded border-[#0d2a19] focus:ring-2 focus:ring-white text-sm py-1">
+                            <option value="ar">العربية</option>
+                            <option value="en">English</option>
+                            <option value="fr">Français</option>
+                            <option value="ur">اردو</option>
+                            <option value="id">Bahasa Indonesia</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <label for="reciter" class="text-sm font-medium text-white ml-2">القارئ:</label>
+                        <select id="reciter" class="bg-[#143b22] text-white rounded border-[#0d2a19] focus:ring-2 focus:ring-white text-sm py-1">
+                            <option value="mishary">مشاري راشد العفاسي</option>
+                            <option value="sudais">عبد الرحمن السديس</option>
+                            <option value="husary">محمود خليل الحصري</option>
+                            <option value="minshawi">محمد صديق المنشاوي</option>
+                            <option value="muaiqly">ماهر المعيقلي</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center">
+                    <img src="icons/icon-48x48.png" alt="شعار التطبيق" class="h-6 ml-2">
+                    <span class="text-sm font-medium">تطبيق القرآن الكريم التعليمي - إصدار 1.0.0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة الرئيسية -->
+        <div id="home-page" class="container mx-auto px-4 py-6">
+            <!-- مواعيد الصلاة -->
+            <div class="bg-gradient-to-r from-[#21865b] to-[#143b22] text-white rounded-lg shadow-lg mb-6 p-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-lg md:text-xl font-bold">مواعيد الصلاة</h2>
+                    <div class="flex items-center">
+                        <div class="countdown bg-white bg-opacity-20 rounded-full px-3 py-1 text-sm ml-2">
+                            <i class="fas fa-clock ml-1"></i>
+                            <span id="next-prayer-countdown">00:45:30</span> للصلاة القادمة
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-wrap justify-between items-center">
+                    <div class="w-full md:w-8/12 mb-4 md:mb-0">
+                        <div class="flex flex-wrap justify-between prayer-times">
+                            <div class="prayer-time rounded-lg px-3 py-2 text-center mb-2 md:mb-0 w-1/5">
+                                <div class="text-xs md:text-sm">الفجر</div>
+                                <div class="time text-sm md:text-base">04:30</div>
+                            </div>
+                            <div class="prayer-time rounded-lg px-3 py-2 text-center mb-2 md:mb-0 w-1/5">
+                                <div class="text-xs md:text-sm">الظهر</div>
+                                <div class="time text-sm md:text-base">12:10</div>
+                            </div>
+                            <div class="prayer-time active rounded-lg px-3 py-2 text-center mb-2 md:mb-0 w-1/5">
+                                <div class="text-xs md:text-sm">العصر</div>
+                                <div class="time text-sm md:text-base">15:45</div>
+                            </div>
+                            <div class="prayer-time rounded-lg px-3 py-2 text-center mb-2 md:mb-0 w-1/5">
+                                <div class="text-xs md:text-sm">المغرب</div>
+                                <div class="time text-sm md:text-base">19:20</div>
+                            </div>
+                            <div class="prayer-time rounded-lg px-3 py-2 text-center mb-2 md:mb-0 w-1/5">
+                                <div class="text-xs md:text-sm">العشاء</div>
+                                <div class="time text-sm md:text-base">20:50</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-4/12 flex justify-center">
+                        <div class="text-center">
+                            <h2 class="text-lg font-bold mb-2">اتجاه القبلة</h2>
+                            <div class="compass mx-auto relative">
+                                <div class="compass-center"></div>
+                                <div class="needle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الأقسام الرئيسية -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                <div class="section-button bg-gradient-to-r from-[#21865b] to-[#143b22] text-white rounded-lg p-6 text-center cursor-pointer shadow-md">
+                    <i class="fas fa-book-quran text-3xl mb-3"></i>
+                    <h3 class="text-xl font-bold">القرآن الكريم</h3>
+                </div>
+                
+                <div class="section-button bg-gradient-to-r from-[#d4af37] to-[#b8860b] text-white rounded-lg p-6 text-center cursor-pointer shadow-md">
+                    <i class="fas fa-users text-3xl mb-3"></i>
+                    <h3 class="text-xl font-bold">حلقات التحفيظ</h3>
+                </div>
+                
+                <div class="section-button bg-gradient-to-r from-[#0F1723] to-[#1A2D49] text-white rounded-lg p-6 text-center cursor-pointer shadow-md">
+                    <i class="fas fa-book-reader text-3xl mb-3"></i>
+                    <h3 class="text-xl font-bold">تعلم القراءة</h3>
+                </div>
+                
+                <div class="section-button bg-gradient-to-r from-[#143b22] to-[#0d2a19] text-white rounded-lg p-6 text-center cursor-pointer shadow-md">
+                    <i class="fas fa-chalkboard-teacher text-3xl mb-3"></i>
+                    <h3 class="text-xl font-bold">الفصول الافتراضية</h3>
+                </div>
+                
+                <div class="section-button bg-gradient-to-r from-[#b8860b] to-[#a67c00] text-white rounded-lg p-6 text-center cursor-pointer shadow-md">
+                    <i class="fas fa-graduation-cap text-3xl mb-3"></i>
+                    <h3 class="text-xl font-bold">المواد التعليمية</h3>
+                </div>
+                
+                <div class="section-button bg-gradient-to-r from-[#1A2D49] to-[#0F1723] text-white rounded-lg p-6 text-center cursor-pointer shadow-md">
+                    <i class="fas fa-user-graduate text-3xl mb-3"></i>
+                    <h3 class="text-xl font-bold">تواصل مع العلماء</h3>
+                </div>
+            </div>
+
+            <!-- آخر قراءة -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 mb-10">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">آخر قراءة</h2>
+                    <button class="text-[#21865b] dark:text-[#4ade80] hover:underline">متابعة القراءة <i class="fas fa-arrow-left mr-1"></i></button>
+                </div>
+                
+                <div class="quran-page p-4 mb-3 bg-[#f1f8f3] dark:bg-[#143b22] border border-[#21865b] dark:border-[#21865b] rounded-lg">
+                    <p class="verse text-xl text-center">﴿بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ﴾</p>
+                </div>
+                
+                <div class="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
+                    <span>سورة الفاتحة - الآية 1</span>
+                    <span>آخر قراءة: اليوم 10:30 ص</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- التذييل -->
+        <footer class="app-footer mt-auto py-4 border-t border-gray-200 dark:border-gray-700 text-center">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col items-center justify-center">
+                    <div class="mb-2">
+                        <img src="icons/icon-72x72.png" alt="شعار التطبيق" class="h-10">
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 font-bold">
+                        عبدالرحمن عوض صالح الرشيدي للبرمجة وتطوير
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-x-4 text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        <a href="tel:+966599900121" class="hover:text-[#21865b] dark:hover:text-[#4ade80]">
+                            <i class="fas fa-phone ml-1"></i>+966 599900121
+                        </a>
+                        <a href="mailto:Tiger3Saudi@gmail.com" class="hover:text-[#21865b] dark:hover:text-[#4ade80]">
+                            <i class="fas fa-envelope ml-1"></i>Tiger3Saudi@gmail.com
+                        </a>
+                    </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        المملكة العربية السعودية، الرياض
+                    </p>
+                    <p class="text-xs text-gray-500 dark:text-gray-500 mt-3">
+                        جميع الحقوق محفوظة &copy; 2023 | الإصدار 1.0.0
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- زر تبديل النمط الداكن/الفاتح -->
+        <button id="theme-toggle" class="fixed top-4 left-4 z-50 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 p-2 rounded-full shadow-lg">
+            <i class="fas fa-sun text-yellow-500 dark:hidden"></i>
+            <i class="fas fa-moon text-blue-300 hidden dark:block"></i>
+        </button>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // تسجيل عامل الخدمة للتطبيق التقدمي
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/serviceWorker.js')
+                    .then(reg => console.log('Service Worker registered successfully:', reg))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+    </script>
+</body>
+</html>
